@@ -1,12 +1,12 @@
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -42,6 +42,8 @@ public class DataStream extends JFrame
         controlsPanel = new JPanel();
         controlsPanel.setLayout(new GridLayout(1,4));
         chooseField = new JTextField(20);
+        chooseField.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createEtchedBorder(), "Choose a filter word", TitledBorder.LEFT, TitledBorder.TOP));
         inputFileButton = new JButton("Input File");
         inputFileButton.addActionListener(e ->
         {
@@ -77,7 +79,11 @@ public class DataStream extends JFrame
         inputFileField = new JTextArea(30, 20);
         outputFileField = new JTextArea(30, 20);
         inputFileScroller = new JScrollPane(inputFileField);
+        inputFileScroller.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createEtchedBorder(), "Original File", TitledBorder.LEFT, TitledBorder.TOP));
         outputFileScroller = new JScrollPane(outputFileField);
+        outputFileScroller.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createEtchedBorder(), "Filtered File", TitledBorder.LEFT, TitledBorder.TOP));
         textAreaPanel.add(inputFileScroller);
         textAreaPanel.add(outputFileScroller);
 
@@ -137,14 +143,10 @@ public class DataStream extends JFrame
                     String lineString = l.toLowerCase();
                     inputFileField.append(l + "\n");
                     String[] words = lineString.split("\\W");
-                    Set<String> wordsSet = Set.of(words);
-                    for (String s : wordsSet)
-                    {
-                        System.out.println(s);
-                    }
+                    Set<String> wordsSet = new HashSet<>(Arrays.asList(words));
                     if (wordsSet.contains(chosenString))
                     {
-                        outputFileField.append(l + "\n");
+                        outputFileField.append(l + "\n\n");
                     }
             });
 
